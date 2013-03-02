@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Tagger</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="radio_one">1st</string>
+    <string name="radio_two">2nd</string>
+    <string name="radio_three">3rd</string>
+    <string name="return_button">Save changes</string>
+    <string name="settings">Settings</string>
+</resources>

@@ -1,0 +1,144 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button1"
+        android:layout_centerHorizontal="true" >
+
+    </ListView>
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+
+    <SlidingDrawer
+        android:id="@+id/slidingDrawer1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/progressBar8"
+        android:content="@+id/content"
+        android:handle="@+id/handle" >
+
+        <Button
+            android:id="@+id/handle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/test"/>
+	
+		<LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" 
+            android:background="@drawable/black"
+            android:orientation="vertical">
+
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:paddingBottom="10dp"
+               android:layout_height="wrap_content" >
+
+               <ProgressBar
+                   android:id="@+id/progressBar2"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:visibility="invisible" />
+
+               <Button
+                   android:id="@+id/button1"
+                   android:layout_width="216dp"
+                   android:layout_height="wrap_content"
+                   android:background="@drawable/button_custom"
+                   android:layout_weight="1"
+                   android:textColor="#FFE1FF"/>
+
+               <ProgressBar
+                   android:id="@+id/progressBar3"
+                   android:layout_width="wrap_content"
+                   android:visibility="invisible"
+                   android:layout_height="wrap_content" />
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:paddingBottom="10dp"
+               android:layout_height="wrap_content" >
+
+               <ProgressBar
+                   android:id="@+id/progressBar4"
+                   android:layout_width="wrap_content"
+                   android:visibility="invisible"
+                   android:layout_height="wrap_content" />
+
+               <Button
+                   android:id="@+id/button2"
+                   android:layout_width="200dp"
+                   android:layout_height="wrap_content"
+                   android:background="@drawable/button_custom"
+                   android:layout_weight="1."
+                   android:textColor="#FFE1FF" />
+
+               <ProgressBar
+                   android:id="@+id/progressBar5"
+                   android:layout_width="wrap_content"
+                   android:visibility="invisible"
+                   android:layout_height="wrap_content" />
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content" >
+
+               <ProgressBar
+                   android:id="@+id/progressBar6"
+                   android:layout_width="wrap_content"
+                   android:visibility="invisible"
+                   android:layout_height="wrap_content" />
+
+               <Button
+                   android:id="@+id/button3"
+                   android:layout_width="217dp"
+                   android:layout_height="wrap_content"
+                   android:background="@drawable/button_custom"
+                   android:layout_weight="1"
+                   android:textColor="#FFE1FF"/>
+
+               <ProgressBar
+                   android:id="@+id/progressBar7"
+                   android:layout_width="wrap_content"
+                   android:visibility="invisible"
+                   android:layout_height="wrap_content" />
+           </LinearLayout>
+
+        </LinearLayout>
+    </SlidingDrawer>
+
+    <ProgressBar
+        android:id="@+id/progressBar8"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible" />
+
+    <ProgressBar
+        android:id="@+id/progressBar9"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_below="@+id/progressBar8"
+        android:layout_marginLeft="16dp" />
+
+</RelativeLayout>
