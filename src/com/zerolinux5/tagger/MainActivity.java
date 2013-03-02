@@ -480,8 +480,8 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("token", "CMPS121_yehaa"));
 			params.add(new BasicNameValuePair("user", "luca"));
-			params.add(new BasicNameValuePair("lat", "37.2"));
-			params.add(new BasicNameValuePair("lng", "120.5"));
+			params.add(new BasicNameValuePair("lat",Double.toString(latitude)));
+			params.add(new BasicNameValuePair("lng", Double.toString(longitude)));
 			params.add(new BasicNameValuePair("tag", label1));
 			serverParams.params = params;
 			serverParams.continuation = new ContinuationAddTag();
@@ -497,8 +497,8 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("token", "CMPS121_yehaa"));
 			params.add(new BasicNameValuePair("user", "luca"));
-			params.add(new BasicNameValuePair("lat", "37.2"));
-			params.add(new BasicNameValuePair("lng", "120.5"));
+			params.add(new BasicNameValuePair("lat", Double.toString(latitude)));
+			params.add(new BasicNameValuePair("lng", Double.toString(longitude)));
 			params.add(new BasicNameValuePair("tag", label2));
 			serverParams.params = params;
 			serverParams.continuation = new ContinuationAddTag();
@@ -514,8 +514,8 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("token", "CMPS121_yehaa"));
 			params.add(new BasicNameValuePair("user", "luca"));
-			params.add(new BasicNameValuePair("lat", "37.2"));
-			params.add(new BasicNameValuePair("lng", "120.5"));
+			params.add(new BasicNameValuePair("lat", Double.toString(latitude)));
+			params.add(new BasicNameValuePair("lng", Double.toString(longitude)));
 			params.add(new BasicNameValuePair("tag", label3));
 			serverParams.params = params;
 			serverParams.continuation = new ContinuationAddTag();
