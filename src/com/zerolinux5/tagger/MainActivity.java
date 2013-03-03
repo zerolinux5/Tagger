@@ -19,8 +19,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -28,14 +30,20 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SlidingDrawer;
+import android.widget.TextView;
 import android.widget.SlidingDrawer.OnDrawerCloseListener;
 import android.widget.SlidingDrawer.OnDrawerOpenListener;
 import android.widget.Toast;
@@ -67,10 +75,61 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 	public double latitude = 0;
 	public double longitude = 0;
 	
+	private class ListElement {
+		ListElement() {};
+		
+		public String textLabel;
+	}
+	
+	private ArrayList<ListElement> aList;
+	
+	private class MyAdapter extends ArrayAdapter<ListElement>{
+
+		int resource;
+		Context context;
+		
+		public MyAdapter(Context _context, int _resource, List<ListElement> items) {
+			super(_context, _resource, items);
+			resource = _resource;
+			context = _context;
+			this.context = _context;
+		}
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			LinearLayout newView;
+			
+			ListElement w = getItem(position);
+			
+			// Inflate a new view if necessary.
+			if (convertView == null) {
+				newView = new LinearLayout(getContext());
+				String inflater = Context.LAYOUT_INFLATER_SERVICE;
+				LayoutInflater vi = (LayoutInflater) getContext().getSystemService(inflater);
+				vi.inflate(resource,  newView, true);
+			} else {
+				newView = (LinearLayout) convertView;
+			}
+			
+			// Fills in the view.
+			TextView tv = (TextView) newView.findViewById(R.id.listView1);
+			tv.setText(w.textLabel);
+			return newView;
+		}		
+	}
+
+	private MyAdapter aa;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		aList = new ArrayList<ListElement>();
+		aa = new MyAdapter(this, R.layout.list_element, aList);
+		ListView myListView = (ListView) findViewById(R.id.listView1);
+		myListView.setAdapter(aa);
+		aa.notifyDataSetChanged();
+		
 		myGesture = new GestureDetector(this);
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0); 
 		//set the labels and urls to what was previously saved if anything was saved
@@ -151,6 +210,7 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 		});
 		
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		
 	}
 
 	@Override
@@ -487,6 +547,7 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 			serverParams.continuation = new ContinuationAddTag();
 			ContactServer contacter = new ContactServer();
 			contacter.execute(serverParams);
+			Log.d(LOG_TAG, "lat: "+latitude+" lng: "+longitude);
 		}
 		
 		public void buttonTwo(View v){
@@ -504,6 +565,7 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 			serverParams.continuation = new ContinuationAddTag();
 			ContactServer contacter = new ContactServer();
 			contacter.execute(serverParams);
+			Log.d(LOG_TAG, "lat: "+latitude+" lng: "+longitude);
 		}
 		
 		public void buttonThree(View v){
@@ -521,6 +583,7 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 			serverParams.continuation = new ContinuationAddTag();
 			ContactServer contacter = new ContactServer();
 			contacter.execute(serverParams);
+			Log.d(LOG_TAG, "lat: "+latitude+" lng: "+longitude);
 		}
 		
 		@Override

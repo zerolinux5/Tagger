@@ -21,6 +21,7 @@ public final class R {
         public static final int test=0x7f020007;
     }
     public static final class id {
+        public static final int RelativeLayout1=0x7f070019;
         public static final int button1=0x7f070001;
         public static final int button2=0x7f07000a;
         public static final int button3=0x7f07000d;
@@ -29,8 +30,9 @@ public final class R {
         public static final int editText1=0x7f070015;
         public static final int handle=0x7f070006;
         public static final int linearLayout2=0x7f070012;
+        public static final int listText=0x7f07001a;
         public static final int listView1=0x7f070000;
-        public static final int menu_settings=0x7f070019;
+        public static final int menu_settings=0x7f07001b;
         public static final int progressBar1=0x7f070002;
         public static final int progressBar2=0x7f070007;
         public static final int progressBar3=0x7f070008;
@@ -51,6 +53,7 @@ public final class R {
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int activity_menu=0x7f030001;
+        public static final int list_element=0x7f030002;
     }
     public static final class menu {
         public static final int activity_main=0x7f060000;
