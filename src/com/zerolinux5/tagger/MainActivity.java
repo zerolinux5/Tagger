@@ -79,11 +79,14 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 	private Location location;
 	private Location currentLocation;
 	private Criteria criteria;
+	public NearbyTags publicTags;
 	
 	private class ListElement {
 		ListElement() {};
 		
 		public String textLabel;
+		public String bearing;
+		public Double distance;
 	}
 	
 	private ArrayList<ListElement> aList;
@@ -116,8 +119,10 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 			}
 			
 			// Fills in the view.
-			TextView tv = (TextView) newView.findViewById(R.id.listView1);
+			TextView tv = (TextView) newView.findViewById(R.id.listText);
 			tv.setText(w.textLabel);
+			TextView tv2 = (TextView) findViewById(R.id.textView1);
+			tv2.setText(Double.toString(w.distance));
 			return newView;
 		}		
 	}
@@ -223,6 +228,7 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 	    criteria.setBearingRequired(false);
 	    criteria.setCostAllowed(true);
 	    criteria.setPowerRequirement(Criteria.POWER_LOW);
+	    getTags(null);
 	}
 
 	@Override
@@ -292,6 +298,12 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 				Log.d(LOG_TAG, "Returned: " + s);
 			    NearbyTags newTags = decodeNearbyTags(s);
 			    if (newTags != null) {
+			    	ListElement el = new ListElement();
+				    for (int i = 0; i < newTags.tags.length; i++){
+				    	el.textLabel=publicTags.tags[i].tag;
+				    	el.distance=Math.sqrt(Math.pow((latitude - publicTags.tags[i].lat), 2) + Math.pow((longitude - publicTags.tags[i].lng), 2));
+				    }
+				    aa.notifyDataSetChanged();
 			    	// We would have to replace the list in the array adaptor.
 			    	Log.d(LOG_TAG, "The dejsonizing succeeded");
 			    	Log.d(LOG_TAG, "N. of tags:" + newTags.tags.length);
@@ -414,6 +426,7 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
     	NearbyTags tags = null;
     	try {
     		tags = gson.fromJson(s, NearbyTags.class);
+    		publicTags = tags;
     	} catch (JsonSyntaxException ex) {
     		Log.w(LOG_TAG, "Error decoding json: " + s + " exception: " + ex.toString());
     	}
@@ -511,6 +524,8 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 	    @Override
 	    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	        super.onActivityResult(requestCode, resultCode, data);
+		    String provider = locationManager.getBestProvider(criteria, true);
+		    Location location = locationManager.getLastKnownLocation(provider);
 	    	if(requestCode == BUTTONTRUE){
 	    			if (resultCode == RESULT_OK) {
 
@@ -646,5 +661,11 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 		  public Location getLocation() {
 			    return location;
 			  }
+		  
+		  @Override 
+		  public void onResume(){
+			  super.onResume();
+			  getTags(null);
+		  }
 		  
 }
