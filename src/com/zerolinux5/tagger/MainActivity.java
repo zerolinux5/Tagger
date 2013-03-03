@@ -104,6 +104,7 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 		}
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
+			
 			LinearLayout newView;
 			
 			ListElement w = getItem(position);
@@ -121,8 +122,10 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 			// Fills in the view.
 			TextView tv = (TextView) newView.findViewById(R.id.listText);
 			tv.setText(w.textLabel);
-			TextView tv2 = (TextView) findViewById(R.id.textView1);
+			TextView tv2 = (TextView) newView.findViewById(R.id.textView1);
 			tv2.setText(Double.toString(w.distance));
+			TextView tv3 = (TextView) newView.findViewById(R.id.textView2);
+			tv3.setText(w.bearing);
 			return newView;
 		}		
 	}
@@ -265,7 +268,7 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 			}
 		}
 	}
-
+	
 	public void getTags(View v) {
 		// Let us build the parameters.
 		ServerCallParams serverParams = new ServerCallParams();
@@ -295,13 +298,44 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 			if (s == null) {
 				Log.d(LOG_TAG, "Returned an empty string.");
 			} else {
+				//clear the list so only top 20 show up
+			    aList.clear();
+			    String provider = locationManager.getBestProvider(criteria, true);
+			    Location location = locationManager.getLastKnownLocation(provider);
 				Log.d(LOG_TAG, "Returned: " + s);
 			    NearbyTags newTags = decodeNearbyTags(s);
 			    if (newTags != null) {
-			    	ListElement el = new ListElement();
+			    	//for each of the tags that is gotten get the distance, theta, and tag
 				    for (int i = 0; i < newTags.tags.length; i++){
+				    	ListElement el = new ListElement();
 				    	el.textLabel=publicTags.tags[i].tag;
-				    	el.distance=Math.sqrt(Math.pow((latitude - publicTags.tags[i].lat), 2) + Math.pow((longitude - publicTags.tags[i].lng), 2));
+				    	el.distance=Math.sqrt(Math.pow((location.getLatitude() - publicTags.tags[i].lat), 2) + Math.pow((location.getLongitude() - publicTags.tags[i].lng), 2));
+				    	int a = 0;
+				    	
+				    	//get the theta to see where in respect to the person it is
+				    	double theta = Math.abs(Math.atan((location.getLatitude() - publicTags.tags[i].lat) /(location.getLongitude() - publicTags.tags[i].lng) -a)*100);
+				    	Log.d(LOG_TAG, "The theta:"+ theta+"\n");
+				    	if (theta > 0 && theta < 90){
+				    		el.bearing=":NE";
+				    	} else if(theta > 90 && theta < 180){
+				    		el.bearing=":NW";
+				    	} else if(theta > 180 && theta < 270){
+				    		el.bearing=":SW";
+				    	} else if(theta > 270 && theta < 360){
+				    		el.bearing=":SE";
+				    	} else if (theta == 0){
+				    		el.bearing = ":E";
+				    	} else if (theta == 90){
+				    		el.bearing=":N";
+				    	} else if (theta == 180){
+				    		el.bearing=":W";
+				    	} else if (theta == 270){
+				    		el.bearing=":S";
+				    	} else {
+				    		el.bearing=":On it";
+				    	}
+				    	Log.d(LOG_TAG, "The bearing:"+ el.bearing+"\n");
+				    	aList.add(el);
 				    }
 				    aa.notifyDataSetChanged();
 			    	// We would have to replace the list in the array adaptor.
@@ -558,9 +592,11 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 		  	editor.putString("label2", label2);
 		  	editor.putString("label3", label3);
 		  	editor.commit();
+		  	getTags(null);
 		  	super.onPause();
 	    }
 	    
+	    //tell the server to upload the new tag and download the current list of tags
 		public void buttonOne(View v){
 			slidingDrawer.close();
 		    String provider = locationManager.getBestProvider(criteria, true);
@@ -581,8 +617,10 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 			ContactServer contacter = new ContactServer();
 			contacter.execute(serverParams);
 			Log.d(LOG_TAG, "lat: "+latitude+" lng: "+longitude);
+			getTags(null);
 		}
 		
+	    //tell the server to upload the new tag and download the current list of tags
 		public void buttonTwo(View v){
 			slidingDrawer.close();
 		    String provider = locationManager.getBestProvider(criteria, true);
@@ -603,8 +641,10 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 			ContactServer contacter = new ContactServer();
 			contacter.execute(serverParams);
 			Log.d(LOG_TAG, "lat: "+latitude+" lng: "+longitude);
+			getTags(null);
 		}
 		
+	    //tell the server to upload the new tag and download the current list of tags
 		public void buttonThree(View v){
 			slidingDrawer.close();
 		    String provider = locationManager.getBestProvider(criteria, true);
@@ -625,6 +665,7 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 			ContactServer contacter = new ContactServer();
 			contacter.execute(serverParams);
 			Log.d(LOG_TAG, "lat: "+latitude+" lng: "+longitude);
+			getTags(null);
 		}
 		
 		@Override
@@ -638,6 +679,7 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 			// TODO Auto-generated method stub
 			latitude = (double) (location.getLatitude());
 			longitude = (double) (location.getLongitude());
+			getTags(null);
 		}
 
 		@Override
