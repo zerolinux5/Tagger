@@ -263,14 +263,16 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 	public void getTags(View v) {
 		// Let us build the parameters.
 		ServerCallParams serverParams = new ServerCallParams();
+	    String provider = locationManager.getBestProvider(criteria, true);
+	    Location location = locationManager.getLastKnownLocation(provider);
 		serverParams.url = "get_tags.json";
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("token", "CMPS121_yehaa"));
 		params.add(new BasicNameValuePair("user", "luca"));
-		params.add(new BasicNameValuePair("lat_min", "37.1"));
-		params.add(new BasicNameValuePair("lng_min", "120.1"));
-		params.add(new BasicNameValuePair("lat_max", "39.2"));
-		params.add(new BasicNameValuePair("lng_max", "122.2"));
+		params.add(new BasicNameValuePair("lat_min", Double.toString(location.getLatitude() - .05)));
+		params.add(new BasicNameValuePair("lng_min", Double.toString(location.getLongitude() - .05)));
+		params.add(new BasicNameValuePair("lat_max", Double.toString(location.getLatitude() + .05)));
+		params.add(new BasicNameValuePair("lng_max", Double.toString(location.getLongitude() + .05)));
 		params.add(new BasicNameValuePair("n_taggings", "20"));
 		serverParams.params = params;
 		serverParams.continuation = new ContinuationGetTagList();
