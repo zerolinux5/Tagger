@@ -23,6 +23,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -74,6 +76,9 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 	
 	public double latitude = 0;
 	public double longitude = 0;
+	private Location location;
+	private Location currentLocation;
+	private Criteria criteria;
 	
 	private class ListElement {
 		ListElement() {};
@@ -211,6 +216,13 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 		
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		
+		// Define a set of criteria used to select a location provider.
+	    criteria = new Criteria();
+	    criteria.setAccuracy(Criteria.ACCURACY_FINE);
+	    criteria.setAltitudeRequired(false);
+	    criteria.setBearingRequired(false);
+	    criteria.setCostAllowed(true);
+	    criteria.setPowerRequirement(Criteria.POWER_LOW);
 	}
 
 	@Override
@@ -534,6 +546,10 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 	    
 		public void buttonOne(View v){
 			slidingDrawer.close();
+		    String provider = locationManager.getBestProvider(criteria, true);
+		    Location location = locationManager.getLastKnownLocation(provider);
+		    latitude = location.getLatitude();
+		    longitude = location.getLongitude();
 			// Let us build the parameters.
 			ServerCallParams serverParams = new ServerCallParams();
 			serverParams.url = "add_tagging.json";
@@ -552,6 +568,10 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 		
 		public void buttonTwo(View v){
 			slidingDrawer.close();
+		    String provider = locationManager.getBestProvider(criteria, true);
+		    Location location = locationManager.getLastKnownLocation(provider);
+		    latitude = location.getLatitude();
+		    longitude = location.getLongitude();
 			// Let us build the parameters.
 			ServerCallParams serverParams = new ServerCallParams();
 			serverParams.url = "add_tagging.json";
@@ -570,6 +590,10 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 		
 		public void buttonThree(View v){
 			slidingDrawer.close();
+		    String provider = locationManager.getBestProvider(criteria, true);
+		    Location location = locationManager.getLastKnownLocation(provider);
+		    latitude = location.getLatitude();
+		    longitude = location.getLongitude();
 			// Let us build the parameters.
 			ServerCallParams serverParams = new ServerCallParams();
 			serverParams.url = "add_tagging.json";
@@ -616,4 +640,9 @@ public class MainActivity extends Activity implements OnGestureListener, Locatio
 			// TODO Auto-generated method stub
 			
 		}
+		
+		  public Location getLocation() {
+			    return location;
+			  }
+		  
 }
